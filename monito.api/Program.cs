@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using monito.api.Data;
 using monito.api.Mappings;
 using monito.api.Repository;
+using monito.api.Repository.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<MonitoDbContext>(options=> options.UseSqlServer(builder.Configuration.GetConnectionString("MonitoConnectionString")));
 
 builder.Services.AddScoped<IPetRepository, SQLPetRepository>();
+builder.Services.AddScoped<IProductRepository, SQLProductRepository>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 var app = builder.Build();

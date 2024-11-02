@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using monito.api.Data;
 using monito.api.Domain.Model;
 using monito.api.Domain.Model.DTO;
+using monito.api.Repository.Contracts;
 
 namespace monito.api.Repository
 {
