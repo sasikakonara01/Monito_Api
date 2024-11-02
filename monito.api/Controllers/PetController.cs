@@ -85,24 +85,8 @@ namespace monito.api.Controllers
 
             
             //ConvertDomain Model to Dto
-            var petDto = new PetDto
-            {
-                Name = petDomainModel.Name,
-                Gender = petDomainModel.Gender,
-                AgeInMonths = petDomainModel.AgeInMonths,
-                Size = petDomainModel.Size,
-                Color = petDomainModel.Color,
-                Vaccinated = petDomainModel.Vaccinated,
-                Dewormed = petDomainModel.Dewormed,
-                Cert = petDomainModel.Cert,
-                Microchip = petDomainModel.Microchip,
-                Location = petDomainModel.Location,
-                PublishedDate = petDomainModel.PublishedDate,
-                AdditionalInfo = petDomainModel.AdditionalInfo,
-                ImagePath = petDomainModel.ImagePath,
-                OwnerId = petDomainModel.OwnerId,
 
-            };
+            var petDto =mapper.Map<PetDto>(petDomainModel);
 
             return Ok(new
             {
@@ -110,9 +94,7 @@ namespace monito.api.Controllers
                 Data = petDto
 
             });
-
         }
-
 
         [HttpDelete]
         [Route("{id:int}")]
@@ -126,24 +108,7 @@ namespace monito.api.Controllers
             }
 
             //return the deleted region back
-            var petDto = new PetDto
-            {
-                Name = deletePetData.Name,
-                Gender = deletePetData.Gender,
-                AgeInMonths = deletePetData.AgeInMonths,
-                Size = deletePetData.Size,
-                Color = deletePetData.Color,
-                Vaccinated = deletePetData.Vaccinated,
-                Dewormed = deletePetData.Dewormed,
-                Cert = deletePetData.Cert,
-                Microchip = deletePetData.Microchip,
-                Location = deletePetData.Location,
-                PublishedDate = deletePetData.PublishedDate,
-                AdditionalInfo = deletePetData.AdditionalInfo,
-                ImagePath = deletePetData.ImagePath,
-                OwnerId = deletePetData.OwnerId,
-
-            };
+            var petDto = mapper.Map<PetDto>(deletePetData);
 
             return Ok(new {
                         Message="SucessFully Deleted",
