@@ -1,4 +1,5 @@
-﻿using monito.api.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using monito.api.Data;
 using monito.api.Domain.Model;
 using monito.api.Repository.Contracts;
 
@@ -22,5 +23,13 @@ namespace monito.api.Repository
             await _monitoDbContext.SaveChangesAsync();
             return product;
         }
+
+       public async  Task<List<Product>> GetAllAsync()
+        {
+           var ProductList = await _monitoDbContext.Products.ToListAsync();
+            return ProductList;
+        }
+
+        
     }
 }

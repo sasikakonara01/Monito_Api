@@ -33,5 +33,18 @@ namespace monito.api.Controllers
                     Data = productDto });
             
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        { 
+        
+           var poductListDomain= await _productRepository.GetAllAsync();
+            var productListDto = _mapper.Map<List<ProductDto>>(poductListDomain);
+            return Ok(productListDto);
+            
+
+        }
+
+
     }
 }
