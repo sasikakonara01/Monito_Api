@@ -67,5 +67,26 @@ namespace monito.api.Controllers
             var productDto = _mapper.Map<ProductDto>(productDomain);
             return Ok(productDto);
         }
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+
+            var deleteProduct = await _productRepository.DeleteAsync(id);
+            if (deleteProduct == null)
+            {
+                return NotFound();
+            }
+            var deleteProductDto = _mapper.Map<ProductDto>(deleteProduct);
+
+            return Ok(
+                new
+                {
+                    Message = "Deleted SuccessFully",
+                    Data = deleteProductDto
+                });
+        
+        }
     }
 }

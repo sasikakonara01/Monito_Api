@@ -65,5 +65,19 @@ namespace monito.api.Repository
             return productExsist;
     }
 
+        public async Task<Product?> DeleteAsync(int id)
+        {
+           var productExsists = await _monitoDbContext.Products.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (productExsists == null) 
+            {
+                return null;
+            }
+
+            _monitoDbContext.Products.Remove(productExsists);
+            await _monitoDbContext.SaveChangesAsync();
+            return productExsists;
+
+        }
     }
 }
