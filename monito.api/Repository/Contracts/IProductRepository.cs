@@ -6,6 +6,8 @@ namespace monito.api.Repository.Contracts
     {
         Task<Product> CreateAsync(Product product);
         Task<List<Product>> GetAllAsync();
+        Task<Product?> GetByIdAsync(int id);
+        Task<Product?> UpdateAsync(int id, Product product);
         
     }
 }

@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace monito.api.Domain.Model.DTO
 {
-    public class AddProductRequestDto
+    public class UpdateProductRequestDto
     {
         [Required]
         public string Name { get; set; }

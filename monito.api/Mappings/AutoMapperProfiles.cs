@@ -14,6 +14,7 @@ namespace monito.api.Mappings
 
             CreateMap<Product, AddProductRequestDto>().ReverseMap();
             CreateMap<ProductDto,Product>().ReverseMap();
+            CreateMap<Product,UpdateProductRequestDto>().ReverseMap();
 
         }
     }
