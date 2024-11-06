@@ -17,6 +17,7 @@ builder.Services.AddDbContext<MonitoDbContext>(options=> options.UseSqlServer(bu
 
 builder.Services.AddScoped<IPetRepository, SQLPetRepository>();
 builder.Services.AddScoped<IProductRepository, SQLProductRepository>();
+builder.Services.AddScoped<IOwnerRepository, SQLOwnerRepository>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 var app = builder.Build();
