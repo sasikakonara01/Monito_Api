@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
+using monito.api.CustomActionFilters;
 using monito.api.Domain.Model;
 using monito.api.Domain.Model.DTO;
 using monito.api.Repository.Contracts;
@@ -21,16 +22,19 @@ namespace monito.api.Controllers
             _productRepository = productRepository;
         }
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> Create([FromBody] AddProductRequestDto addProductRequestDto)
-        {
-
-            var productDomainmodel = _mapper.Map<Product>(addProductRequestDto);
-            productDomainmodel = await _productRepository.CreateAsync(productDomainmodel);
-            var productDto = _mapper.Map<ProductDto>(productDomainmodel);
-            return Created("",
-                new {
-                    Message = "Created Product Successfully",
-                    Data = productDto });
+        {  
+                var productDomainmodel = _mapper.Map<Product>(addProductRequestDto);
+                productDomainmodel = await _productRepository.CreateAsync(productDomainmodel);
+                var productDto = _mapper.Map<ProductDto>(productDomainmodel);
+                return Created("",
+                    new
+                    {
+                        Message = "Created Product Successfully",
+                        Data = productDto
+                    });
+            
 
         }
 
@@ -55,17 +59,19 @@ namespace monito.api.Controllers
 
         [HttpPut]
         [Route("{id:int}")]
+        [ValidateModel]
         public async Task<IActionResult> Update([FromRoute] int id , [FromBody] UpdateProductRequestDto updateProductRequestDto) 
         {
-           var productDomain = _mapper.Map<Product>(updateProductRequestDto);
-            productDomain= await _productRepository.UpdateAsync(id, productDomain);
-            if (productDomain == null)
-            { 
-            return NotFound();
-            }
-            // convert domain model to dto
-            var productDto = _mapper.Map<ProductDto>(productDomain);
-            return Ok(productDto);
+                var productDomain = _mapper.Map<Product>(updateProductRequestDto);
+                productDomain = await _productRepository.UpdateAsync(id, productDomain);
+                if (productDomain == null)
+                {
+                    return NotFound();
+                }
+                // convert domain model to dto
+                var productDto = _mapper.Map<ProductDto>(productDomain);
+                return Ok(productDto);
+            
         }
 
         [HttpDelete]

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using monito.api.CustomActionFilters;
 using monito.api.Data;
 using monito.api.Domain.Model;
 using monito.api.Domain.Model.DTO;
@@ -53,47 +54,52 @@ namespace monito.api.Controllers
         }
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> Create([FromBody] AddPetRequestDto addPetRequestDto)
         {
-            var petDomainModel=mapper.Map<Pet>(addPetRequestDto);
+                var petDomainModel = mapper.Map<Pet>(addPetRequestDto);
 
-            petDomainModel = await _petRepository.CreateAsync(petDomainModel);
+                petDomainModel = await _petRepository.CreateAsync(petDomainModel);
 
-            var petDto = mapper.Map<PetDto>(petDomainModel);
+                var petDto = mapper.Map<PetDto>(petDomainModel);
 
-            return CreatedAtAction(nameof(GetById), new { id = petDomainModel.Id }, petDto);
+                return CreatedAtAction(nameof(GetById), new { id = petDomainModel.Id }, petDto);
+           
 
         }
 
         [HttpPut]
         [Route("{id:int}")]
+        [ValidateModel]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdatePetRequestDto updatePetRequestDto)
         {
-            //map dto to domain model
-
-            var petDomainModel = mapper.Map<Pet>(updatePetRequestDto);
             
+                var petDomainModel = mapper.Map<Pet>(updatePetRequestDto);
 
-            // check this id exsists
 
-            petDomainModel = await _petRepository.UpdateAsync(id,petDomainModel);
+                // check this id exsists
 
-            if (petDomainModel == null)
-            {
-                return NotFound();
-            }
+                petDomainModel = await _petRepository.UpdateAsync(id, petDomainModel);
 
-            
-            //ConvertDomain Model to Dto
+                if (petDomainModel == null)
+                {
+                    return NotFound();
+                }
 
-            var petDto =mapper.Map<PetDto>(petDomainModel);
 
-            return Ok(new
-            {
-                Message = "Pet Information Update Successfully",
-                Data = petDto
+                //ConvertDomain Model to Dto
 
-            });
+                var petDto = mapper.Map<PetDto>(petDomainModel);
+
+                return Ok(new
+                {
+                    Message = "Pet Information Update Successfully",
+                    Data = petDto
+
+                });
+       
+
+          
         }
 
         [HttpDelete]

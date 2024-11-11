@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using monito.api.CustomActionFilters;
 using monito.api.Domain.Model;
 using monito.api.Domain.Model.DTO;
 using monito.api.Repository.Contracts;
@@ -46,30 +47,35 @@ namespace monito.api.Controllers
         }
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> Create(AddOwnerRequestDto addOwnerRequestDto)
         {
-            var OwnerDomain = _mapper.Map<Owner>(addOwnerRequestDto);
-            OwnerDomain = await _ownerRepository.CreateAsync(OwnerDomain);
+                var OwnerDomain = _mapper.Map<Owner>(addOwnerRequestDto);
+                OwnerDomain = await _ownerRepository.CreateAsync(OwnerDomain);
 
-            if (OwnerDomain == null)
-            {
-                return NotFound();
-            }
-            return Ok(_mapper.Map<OwnerDto>(OwnerDomain));
+                if (OwnerDomain == null)
+                {
+                    return NotFound();
+                }
+                return Ok(_mapper.Map<OwnerDto>(OwnerDomain));
+           
         }
 
         [HttpPut]
         [Route("{id:int}")]
+        [ValidateModel]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateOwnerRequestDto updateOwnerRequestDto)
         {
-
-            var OwnerDomain = _mapper.Map<Owner>(updateOwnerRequestDto);
-            OwnerDomain = await _ownerRepository.UpdateAsync(id, OwnerDomain);
-            if (OwnerDomain == null)
-            {
-                return NotFound();
-            }
-            return Ok(_mapper.Map<OwnerDto>(OwnerDomain));
+           
+                var OwnerDomain = _mapper.Map<Owner>(updateOwnerRequestDto);
+                OwnerDomain = await _ownerRepository.UpdateAsync(id, OwnerDomain);
+                if (OwnerDomain == null)
+                {
+                    return NotFound();
+                }
+                return Ok(_mapper.Map<OwnerDto>(OwnerDomain));
+            
+           
         }
 
         [HttpDelete]
