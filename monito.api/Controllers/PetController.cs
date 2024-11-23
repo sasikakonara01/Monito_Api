@@ -30,9 +30,9 @@ namespace monito.api.Controllers
         //get all pets
         //api/pets
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync()
+        public async Task<IActionResult> GetAllAsync([FromQuery] string? filterOn , [FromQuery] string? filterQuery)
         {
-            var petsDomain = await _petRepository.GetAllAsync();
+            var petsDomain = await _petRepository.GetAllAsync(filterOn, filterQuery);
             var petDto =  mapper.Map<List<PetDto>>(petsDomain);
 
             return Ok(petDto);

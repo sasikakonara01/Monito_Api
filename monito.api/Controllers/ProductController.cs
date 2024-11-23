@@ -39,10 +39,10 @@ namespace monito.api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuerry)
         {
 
-            var poductListDomain = await _productRepository.GetAllAsync();
+            var poductListDomain = await _productRepository.GetAllAsync(filterOn, filterQuerry);
             var productListDto = _mapper.Map<List<ProductDto>>(poductListDomain);
             return Ok(productListDto);
 

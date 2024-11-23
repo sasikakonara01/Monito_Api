@@ -25,10 +25,26 @@ namespace monito.api.Repository
             return product;
         }
 
-        public async  Task<List<Product>> GetAllAsync()
+        public async  Task<List<Product>> GetAllAsync(string? filterOn = null, string? filterQuery = null)
         {
-           var ProductList = await _monitoDbContext.Products.ToListAsync();
-            return ProductList;
+           var ProductList = _monitoDbContext.Products.AsQueryable();
+            
+            //Filtering
+            if(string.IsNullOrWhiteSpace(filterOn)==false&& string.IsNullOrWhiteSpace(filterQuery)==false)
+            {
+               if(filterOn.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    ProductList = ProductList.Where(x=>x.Name.Contains(filterQuery));
+                }
+                if (filterOn.Equals("Description", StringComparison.OrdinalIgnoreCase))
+                {
+                    ProductList = ProductList.Where(x => x.Description.Contains(filterQuery));
+                }
+            }
+
+
+
+            return await ProductList.ToListAsync();
         }
 
         public async Task<Product?>GetByIdAsync(int id)
@@ -64,6 +80,7 @@ namespace monito.api.Repository
 
             return productExsist;
     }
+
 
         public async Task<Product?> DeleteAsync(int id)
         {

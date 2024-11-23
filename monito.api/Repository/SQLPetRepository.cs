@@ -15,9 +15,23 @@ namespace monito.api.Repository
         {
             _monitoDbContext = monitoDbContext;
         }
-        public async Task<List<Pet>> GetAllAsync()
+        public async Task<List<Pet>> GetAllAsync( string? filterOn = null , string? filterQuery = null)
         {
-            return await _monitoDbContext.Pets.ToListAsync();
+             var PetList = _monitoDbContext.Pets.AsQueryable();
+
+            if(string.IsNullOrWhiteSpace(filterOn)== false && string.IsNullOrWhiteSpace(filterQuery) ==false)
+                {
+                if (filterOn.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    PetList = PetList.Where(x => x.Name.Contains(filterQuery));
+                }
+                //if (int.TryParse(filterQuery, out int ownerId))
+                //{
+                //    PetList = PetList.Where(x => x.OwnerId == ownerId);
+                //}
+            }
+
+            return await PetList.ToListAsync();
         }
 
 
